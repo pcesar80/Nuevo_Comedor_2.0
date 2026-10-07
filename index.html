@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#bde4f1">
+  <title>Ingresos | CMA</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="CMA inicio">CM<span class="brand-a">A</span></a>
+    <nav class="nav" aria-label="Navegación principal">
+      <button id="open-foods-amb" type="button">ADM KIOSCO</button>
+      <a href="#comensales">COMENSALES</a>
+      <button id="open-weekly-menu" type="button">MENÚ SEMANAL</button>
+      <a class="active" href="#ingresos" aria-current="page">INGRESOS</a>
+      <a href="#escanear">ESCANEAR</a>
+      <button type="button">REPORTES <span class="chevron" aria-hidden="true"></span></button>
+      <button type="button">TIPOS <span class="chevron" aria-hidden="true"></span></button>
+    </nav>
+    <div class="seal" aria-label="Emblema CMA" role="img">✹</div>
+  </header>
+
+  <main id="ingresos">
+    <section class="page-heading" aria-labelledby="page-title">
+      <h1 id="page-title">Ingresos</h1>
+      <div class="quick-links" aria-label="Filtrar ingresos por tipo">
+        <button class="quick-link" type="button" id="open-menu-ticket" aria-haspopup="dialog" aria-controls="menu-dialog">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 5h20v4c0 5-3.5 9-8 9v5h7v4H7v-4h7v-5c-4.5 0-8-4-8-9V5zm4 4c0 3 2.2 5 5.5 5S21 12 21 9V8H10v1zm15 0h3c0 4-1.7 6-5 7l-1-3c2-.6 3-1.7 3-4z"/></svg>
+          MENÚ
+        </button>
+        <button class="quick-link" type="button" id="open-kiosk" aria-haspopup="dialog" aria-controls="kiosk-dialog">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 22a11 11 0 0 1 22 0H5zm1 3h20v3H6v-3zm10-17 2-4 2 1-2 4 6 4-2 2-8-5 2-2zM3 18h5v2H3zm21 0h5v2h-5z"/></svg>
+          KIOSCO
+        </button>
+        <button class="quick-link" type="button" id="open-scan-screen" aria-haspopup="dialog" aria-controls="scan-dialog">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 3h18v4h4v18h-4v4H7v-4H3V7h4V3zm3 4H7v18h3v3h12v-3h3V7h-3V4H10v3zm3 4h7v2h-7v-2zm0 4h7v2h-7v-2zm0 4h7v2h-7v-2z"/></svg>
+          ESCANEAR
+        </button>
+        <button class="quick-link" type="button" data-filter="weekend" aria-pressed="false">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 3h18v4h4v18h-4v4H7v-4H3V7h4V3zm3 4H7v18h3v3h12v-3h3V7h-3V4H10v3zm3 4h7v2h-7v-2zm0 4h7v2h-7v-2zm0 4h7v2h-7v-2z"/></svg>
+          INGRESOS DEL FIN DE SEMANA
+        </button>
+      </div>
+    </section>
+
+    <div class="table-scroll">
+      <table aria-label="Registro de ingresos al comedor">
+        <thead>
+          <tr>
+            <th scope="col">Comensal</th>
+            <th scope="col">N° Ticket</th>
+            <th scope="col">Tipo de M...</th>
+            <th scope="col">Escaneado</th>
+            <th scope="col">Fecha Emi...</th>
+            <th scope="col">Hora E.</th>
+            <th scope="col">Fecha Esc...</th>
+            <th scope="col">Hora Es.</th>
+            <th scope="col">Acción</th>
+          </tr>
+        </thead>
+        <tbody id="income-rows">
+        </tbody>
+      </table>
+      <div class="empty-state" id="empty-state">No hay ingresos registrados.</div>
+    </div>
+  </main>
+
+  <dialog class="weekly-dialog" id="weekly-dialog" aria-labelledby="weekly-title">
+    <header class="weekly-brand-header">
+      <div class="weekly-brand"><strong>CMA</strong><small>CASA DE MONEDA ARGENTINA</small></div>
+      <h2 id="weekly-title"><span aria-hidden="true">♜</span> Menú Semanal</h2>
+      <div class="weekly-navigation" aria-label="Navegar semanas">
+        <button id="previous-week" type="button" aria-label="Semana anterior">‹</button>
+        <span id="weekly-date-range"></span>
+        <button id="next-week" type="button" aria-label="Semana siguiente">›</button>
+      </div>
+      <button class="menu-back" id="close-weekly-menu" type="button"><span aria-hidden="true">×</span> CERRAR</button>
+    </header>
+    <div class="weekly-table-scroll">
+      <div class="weekly-grid" id="weekly-grid" role="table" aria-label="Menú de la semana"></div>
+    </div>
+    <div class="weekly-footer" aria-hidden="true"></div>
+  </dialog>
+
+  <dialog class="weekly-day-dialog" id="weekly-day-dialog" aria-labelledby="weekly-day-title">
+    <header class="weekly-day-header">
+      <h2 id="weekly-day-title">Menú</h2>
+      <button class="weekly-icon-close" id="close-weekly-day" type="button" aria-label="Cerrar">×</button>
+    </header>
+    <div class="weekly-day-content">
+      <h3>Tipo de menú: <span id="weekly-menu-type">Del día</span></h3>
+      <p class="weekly-location">Ubicación: <span id="weekly-location">Retiro</span></p>
+      <div class="weekly-groups" id="weekly-groups"></div>
+      <p class="weekly-status" id="weekly-status" role="status" aria-live="polite"></p>
+    </div>
+    <footer class="weekly-day-actions">
+      <button class="weekly-delete" id="delete-weekly-day" type="button" aria-label="Eliminar menú del día" title="Eliminar menú">▤</button>
+      <button class="weekly-edit" id="edit-weekly-day" type="button">✎ EDITAR</button>
+      <button class="weekly-edit" id="save-weekly-day" type="button" hidden>GUARDAR</button>
+      <button class="weekly-cancel" id="cancel-weekly-edit" type="button" hidden>Cancelar</button>
+    </footer>
+  </dialog>
+
+  <dialog class="menu-dialog" id="foods-dialog" aria-labelledby="foods-title">
+    <header class="menu-page-header">
+      <h2 id="foods-title">AMB de comidas</h2>
+      <button class="menu-back" id="close-foods-dialog" type="button"><span aria-hidden="true">←</span> VOLVER</button>
+    </header>
+    <div class="foods-content">
+      <form class="food-form" id="food-form">
+        <label class="food-field" for="food-name">Nombre
+          <input id="food-name" name="name" type="text" maxlength="80" required>
+        </label>
+        <label class="food-field" for="food-price">Precio
+          <input id="food-price" name="price" type="number" min="0.01" step="0.01" required>
+        </label>
+        <label class="food-field" for="food-category">Categoría
+          <select id="food-category" name="category" required></select>
+        </label>
+        <div class="food-field">
+          <label for="food-photo">Foto (opcional)</label>
+          <div class="food-photo-controls">
+            <input id="food-photo" name="photo" type="file" accept="image/*">
+            <img class="food-photo-preview" id="food-photo-preview" alt="Vista previa de la foto" hidden>
+            <label id="remove-photo-label" hidden><input id="remove-food-photo" type="checkbox"> Quitar foto</label>
+          </div>
+        </div>
+        <p class="sr-only" id="food-status" role="status" aria-live="polite"></p>
+        <div class="food-form-actions">
+          <button id="save-food" type="submit">Agregar comida</button>
+          <button class="secondary" id="cancel-food-edit" type="button" hidden>Cancelar edición</button>
+        </div>
+      </form>
+      <div class="food-list-wrap">
+        <table class="food-table" aria-label="Comidas registradas">
+          <thead><tr><th>Foto</th><th>Nombre</th><th>Precio</th><th>Categoría</th><th>Acciones</th></tr></thead>
+          <tbody id="food-rows"></tbody>
+        </table>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="menu-dialog" id="menu-dialog" aria-labelledby="menu-dialog-title">
+    <header class="menu-page-header">
+      <h2 id="menu-dialog-title">Agregar Nuevo Ingreso Menú</h2>
+      <button class="menu-back" id="close-menu-dialog" type="button"><span aria-hidden="true">←</span> VOLVER</button>
+    </header>
+    <div class="menu-page-content">
+      <p class="menu-warning"><span aria-hidden="true">i</span> Tené en cuenta que estás por emitir un ticket de almuerzo fuera de horario.</p>
+      <div class="comensal-picker">
+        <label for="comensal-search">Comensal</label>
+        <div class="comensal-search-wrap">
+          <input class="comensal-search" id="comensal-search" type="search" role="combobox" aria-autocomplete="list" aria-controls="comensal-results" aria-expanded="false" autocomplete="off">
+          <div class="comensal-results" id="comensal-results" role="listbox"></div>
+        </div>
+        <p class="menu-selected" id="selected-comensal" hidden></p>
+      </div>
+      <button class="menu-generate" id="create-menu-ticket" type="button" disabled>Generar ticket</button>
+      <section class="day-tickets" aria-labelledby="day-tickets-title">
+        <h3 id="day-tickets-title">Tickets emitidos del día</h3>
+        <div class="day-tickets-list" id="menu-tickets-list"><p class="day-tickets-empty">No hay tickets emitidos recientemente.</p></div>
+      </section>
+    </div>
+  </dialog>
+
+  <dialog class="scan-dialog" id="scan-dialog" aria-labelledby="scan-dialog-title">
+    <header class="scan-page-header">
+      <h2 id="scan-dialog-title">Escanear Tickets</h2>
+      <button class="menu-back" id="close-scan-dialog" type="button"><span aria-hidden="true">←</span> VOLVER</button>
+    </header>
+    <div class="scan-content">
+      <section class="scan-top-panel" aria-label="Escaneo y contadores">
+        <form class="scan-input-area" id="scan-ticket-form">
+          <label for="scan-ticket-input">Número de ticket *</label>
+          <input class="scan-ticket-input" id="scan-ticket-input" type="text" placeholder="Ingrese el número de ticket" autocomplete="off" required>
+          <p class="scan-feedback" id="scan-feedback" role="status" aria-live="polite"></p>
+        </form>
+        <div class="scan-counters" aria-label="Tickets escaneados">
+          <article class="scan-counter"><span>Menús Escaneados:</span><strong id="scanned-menu-count">0</strong></article>
+          <article class="scan-counter"><span>Kioscos Escaneados:</span><strong id="scanned-kiosk-count">0</strong></article>
+        </div>
+      </section>
+      <section class="scan-panel" aria-labelledby="last-scan-title">
+        <h3 id="last-scan-title">Último Ticket Escaneado</h3>
+        <div class="scan-grid">
+          <div class="scan-grid-head">Comensal</div><div class="scan-grid-head">Tipo de Menú</div><div class="scan-grid-head">Tipo de Ticket</div><div class="scan-grid-head">Número de ticket</div>
+          <div class="scan-grid-row scan-empty" id="last-scan-empty">No hay tickets escaneados recientemente.</div>
+          <div class="scan-grid-row" id="last-scan-name" hidden></div><div class="scan-grid-row" id="last-scan-menu-type" hidden></div><div class="scan-grid-row" id="last-scan-type" hidden></div><div class="scan-grid-row" id="last-scan-number" hidden></div>
+        </div>
+      </section>
+      <section class="scan-panel" aria-labelledby="scanned-tickets-title">
+        <h3 id="scanned-tickets-title">Tickets Escaneados</h3>
+        <div class="scan-grid">
+          <div class="scan-grid-head">Comensal</div><div class="scan-grid-head">Tipo de Menú</div><div class="scan-grid-head">Tipo de Ticket</div><div class="scan-grid-head">Número de ticket</div>
+          <div class="scan-grid-row scan-empty" id="scanned-tickets-empty">No hay tickets escaneados.</div>
+        </div>
+        <div class="scan-grid" id="scanned-tickets-list"></div>
+      </section>
+    </div>
+  </dialog>
+
+  <dialog class="print-dialog" id="print-dialog" aria-label="Vista previa del ticket">
+    <div class="print-preview">
+      <article class="ticket-receipt" id="ticket-receipt">
+        <h2 class="receipt-brand">CMA</h2>
+        <p class="receipt-meta">S.E Casa de Moneda</p>
+        <p class="receipt-meta" id="receipt-person-meta">Legajo: <span id="receipt-legajo"></span><br><span id="receipt-department"></span></p>
+        <p class="receipt-name" id="receipt-name"></p>
+        <p class="receipt-meta" id="receipt-date"></p>
+        <p class="receipt-type" id="receipt-type">Menú</p>
+        <div class="receipt-lines" id="receipt-lines"></div>
+        <p class="receipt-total" id="receipt-total" hidden></p>
+        <div class="receipt-barcode" aria-hidden="true"></div>
+        <p class="receipt-ticket" id="receipt-ticket"></p>
+      </article>
+    </div>
+    <aside class="print-controls">
+      <div><h3>Imprimir</h3><p>Ticket de ingreso · 1 hoja</p><p>Destino: impresora configurada en el navegador</p></div>
+      <footer><button id="cancel-print" type="button">Cancelar</button><button id="print-ticket" type="button">Imprimir</button></footer>
+    </aside>
+  </dialog>
+
+  <dialog class="kiosk-dialog" id="kiosk-dialog" aria-label="Punto de venta Kiosco">
+    <aside class="pos-cart" aria-label="Detalle de la venta">
+      <header class="pos-cart-header">
+        <span class="pos-order-number" id="pos-order-number"># 1</span>
+        <span class="pos-date" id="pos-date"></span>
+        <button class="kiosk-close" type="button" aria-label="Cerrar punto de venta">&times;</button>
+      </header>
+      <div class="pos-customer"><span id="pos-customer-name">Venta Kiosco</span></div>
+      <div class="pos-cart-items" id="cart-items" aria-live="polite"></div>
+      <section class="pos-checkout" aria-label="Cobro">
+        <div class="pos-total"><span>Total</span><strong id="cart-total">$ 0,00</strong></div>
+        <label class="pos-payment-label" for="payment-method">Medio de pago</label>
+        <select class="pos-payment" id="payment-method">
+          <option value="Efectivo">Efectivo</option>
+          <option value="Tarjeta">Tarjeta</option>
+          <option value="Transferencia">Transferencia</option>
+        </select>
+        <div class="pos-pay-row">
+          <button id="clear-cart" type="button">Vaciar</button>
+          <button class="generate-ticket" id="generate-ticket" type="button" disabled>Generar ticket</button>
+        </div>
+      </section>
+    </aside>
+    <section class="pos-catalog" aria-label="Catálogo de productos">
+      <div class="pos-toolbar">
+        <input class="pos-search" id="product-search" type="search" placeholder="Buscar productos..." aria-label="Buscar productos">
+        <span class="pos-toolbar-label">Productos</span>
+      </div>
+      <nav class="pos-categories" id="product-categories" aria-label="Categorías"></nav>
+      <div class="pos-products" id="product-grid"></div>
+    </section>
+  </dialog>
+  <p class="sr-only" id="ticket-status" aria-live="polite"></p>
+
+  <script src="js/core.js"></script>
+  <script src="js/weekly-menu.js"></script>
+  <script src="js/printing.js"></script>
+  <script src="js/foods.js"></script>
+  <script src="js/menu.js"></script>
+  <script src="js/kiosk.js"></script>
+  <script src="js/scanner.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
